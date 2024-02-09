@@ -6,9 +6,12 @@ const app = express();
 const port = 3000;
 
 app.get("/stream", (req, res) => {
+  // Example RTP stream URL - replace with your actual stream URL
+  const streamUrl = "rtmp://@233.50.201.255:1234";
+
   const ffmpeg = spawn("ffmpeg", [
     "-i",
-    "input.sdp", // Input SDP file for the RTP stream
+    streamUrl, // Use the RTP stream URL as input
     "-c:v",
     "libx264", // Video codec
     "-c:a",
@@ -23,12 +26,10 @@ app.get("/stream", (req, res) => {
   ]);
 
   ffmpeg.stderr.on("data", (data) => {
-    // console.log(`stderr: ${data}`);
     logger.error(`stderr: ${data}`);
   });
 
   ffmpeg.on("close", (code) => {
-    // console.log(`child process exited with code ${code}`);
     logger.info(`child process exited with code ${code}`);
   });
 
@@ -36,6 +37,5 @@ app.get("/stream", (req, res) => {
 });
 
 app.listen(port, () => {
-  //   console.log(`Server running at http://localhost:${port}`);
-  logger.info(`Server running at http://localhost:${port}`);
+  logger.info(`Server started at http://localhost:${port}`);
 });
