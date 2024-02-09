@@ -25,7 +25,7 @@ const VideoPlayer = ({ src }: { src: string }) => {
   return <video ref={videoRef} controls />;
 };
 function App() {
-  const path = "http://localhost:3000/path/to/your/hls/stream.m3u8";
+  const path = "http://localhost:3000/stream.m3u8";
   return (
     <main className="debug h-full">
       <VideoPlayer src={path} />
