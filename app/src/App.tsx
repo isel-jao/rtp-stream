@@ -1,34 +1,23 @@
-import Hls from "hls.js";
-import { useEffect, useRef } from "react";
+import ReactPlayer from "react-player";
 
-const VideoPlayer = ({ src }: { src: string }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (!videoRef.current) return;
-
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(src);
-      hls.attachMedia(videoRef.current);
-      hls.on(Hls.Events.MANIFEST_PARSED, function () {
-        videoRef.current?.play();
-      });
-    } else if (videoRef.current.canPlayType("application/vnd.apple.mpegurl")) {
-      videoRef.current.src = src;
-      videoRef.current.addEventListener("loadedmetadata", function () {
-        videoRef.current?.play();
-      });
-    }
-  }, [src]);
-
-  return <video ref={videoRef} controls />;
+const VideoPlayer: React.FC = () => {
+  return (
+    <div className="player-wrapper">
+      <ReactPlayer
+        url="http://localhost:3000/index.m3u8"
+        controls={true}
+        playing={true}
+        width="100%"
+        height="100%"
+      />
+    </div>
+  );
 };
+
 function App() {
-  const path = "http://localhost:3000/stream.m3u8";
   return (
     <main className="debug h-full">
-      <VideoPlayer src={path} />
+      <VideoPlayer />
     </main>
   );
 }
